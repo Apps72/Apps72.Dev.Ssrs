@@ -1,0 +1,18 @@
+﻿<Window x:Class="Apps72.Dev.Ssrs.ReportViewer.SampleUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Apps72.Dev.Ssrs.ReportViewer.SampleUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="187.333" Width="355">
+    <Grid>
+        <Button x:Name="btnDisplay" Content="Display" Margin="10,0,0,10" VerticalAlignment="Bottom" Click="btnDisplay_Click" HorizontalAlignment="Left" Width="75"/>
+        <TextBox x:Name="txtUrl" Height="23" Margin="70,10,10,0" TextWrapping="Wrap" Text="http://YourServer/ReportServer" VerticalAlignment="Top"/>
+        <Label Content="Url:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="23" Width="55"/>
+        <TextBox x:Name="txtPath" Height="23" Margin="70,38,10,0" TextWrapping="Wrap" Text="/YourFolder/PageName" VerticalAlignment="Top"/>
+        <Label Content="Path:" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Height="23" Width="55"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Click="btnSave_Click"/>
+
+    </Grid>
+</Window>

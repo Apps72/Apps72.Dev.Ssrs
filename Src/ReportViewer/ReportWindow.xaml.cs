@@ -16,11 +16,13 @@ namespace Apps72.Dev.Ssrs.ReportViewer
     /// </summary>
     /// <example>
     /// <code>
-    ///     ReportWindow report = new ReportWindow("C:\\MyReport.pdf", "DataSet1", data);
+    ///     ReportWindow report = new ReportWindow(new Uri("http://localhost/ReportServer"), "/MyDocument/MyReport");
     ///     report.Save("C:\\MyReport.pdf", ReportSaveFormat.Pdf);
+    ///     report.ShowDialog();
     /// </code>
     /// <code>
-    ///     ReportWindow report = new ReportWindow("C:\\MyReport.pdf", "DataSet1", data) {Owner = this};
+    ///     ReportWindow report = new ReportWindow("C:\\MyReport.pdf", "DataSet1", data);
+    ///     report.Save("C:\\MyReport.pdf", ReportSaveFormat.Pdf);
     ///     report.ShowDialog();
     /// </code>
     /// <code>
@@ -32,8 +34,8 @@ namespace Apps72.Dev.Ssrs.ReportViewer
     ///     report.ReportDataSources[0].Name = "DataSet1";
     ///     report.ReportDataSources[0].Value = data.ToArray();
     ///
-    ///     report.ShowDialog();
     ///     report.Save("C:\\MyReport.pdf", ReportSaveFormat.Pdf);
+    ///     report.ShowDialog();
     /// </code>
     /// </example>
     public partial class ReportWindow : Window

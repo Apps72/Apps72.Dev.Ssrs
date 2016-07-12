@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps72.Dev.Ssrs.ReportViewer", "Src\ReportViewer\ReportViewer.csproj", "{043793AA-1D2E-4B9A-80DE-4A9EFED6EC11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportViewer", "Src\ReportViewer\ReportViewer.csproj", "{043793AA-1D2E-4B9A-80DE-4A9EFED6EC11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apps72.Dev.Ssrs.ReportViewer.Tests", "Test\ReportViewer\ReportViewer.Tests.csproj", "{C6C3A952-F365-40F9-8FE7-1EBA0DB9444D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportViewer.Tests", "Test\ReportViewer\ReportViewer.Tests.csproj", "{C6C3A952-F365-40F9-8FE7-1EBA0DB9444D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportViewer.SampleUI", "Test\SampleUI\ReportViewer.SampleUI.csproj", "{140ED241-F633-488A-8277-379F41C25B58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C6C3A952-F365-40F9-8FE7-1EBA0DB9444D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6C3A952-F365-40F9-8FE7-1EBA0DB9444D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6C3A952-F365-40F9-8FE7-1EBA0DB9444D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{140ED241-F633-488A-8277-379F41C25B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{140ED241-F633-488A-8277-379F41C25B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{140ED241-F633-488A-8277-379F41C25B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{140ED241-F633-488A-8277-379F41C25B58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

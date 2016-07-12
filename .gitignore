@@ -4,3 +4,10 @@
 
 /Src/ReportViewer/obj/Debug
 /Test/ReportViewer/obj/Debug
+/.vs/Apps72.Dev.Ssrs.ReportViewer/v14
+/Src/ReportViewer/bin
+/Src/ReportViewer/obj/Release
+/Test/ReportViewer/bin
+/Test/ReportViewer/obj/Release
+/Test/SampleUI/bin/Debug
+/Test/SampleUI/obj/Debug
