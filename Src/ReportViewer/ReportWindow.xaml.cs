@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
+using System.Collections.Specialized;
 
 namespace Apps72.Dev.Ssrs.ReportViewer
 {
@@ -135,6 +136,42 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         }
 
         /// <summary>
+        /// Gets or sets the default user used in the ConnectionString.
+        /// If this property is set (not Empty) and if the ConnectionString is in Integrated Security (Trusted Mode), 
+        /// then the ConnectionString will constain "User ID=[UserName];Password=[Password]".
+        /// In other case, this property will be ignored.
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return reportControl.UserName;
+            }
+            set
+            {
+                reportControl.UserName = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default password used in the ConnectionString
+        /// If this property is set (not Empty) and if the ConnectionString is in Integrated Security (Trusted Mode), 
+        /// then the ConnectionString will constain "User ID=[UserName];Password=[Password]".
+        /// In other case, this property will be ignored.
+        /// </summary>
+        public string Password
+        {
+            get
+            {
+                return reportControl.Password;
+            }
+            set
+            {
+                reportControl.Password = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the DataSources items
         /// </summary>
         public ReportDataSource[] ReportDataSources 
@@ -230,6 +267,32 @@ namespace Apps72.Dev.Ssrs.ReportViewer
             reportControl.Print(printerName, orientation);
         }
 
+        /// <summary>
+        /// Add a parameter value to this report.
+        /// </summary>
+        /// <param name="report"></param>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="isVisible"></param>
+        public ReportParameter AddParameter(string name, string value, bool isVisible)
+        {
+            var parameters = this.ReportParameters == null ? new List<ReportParameter>() : new List<ReportParameter>(this.ReportParameters);
+            var values = new StringCollection();
+
+            values.Add(value);
+
+            var newParameter = new ReportParameter()
+            {
+                Name = name,
+                Values = values,
+                IsVisible = isVisible
+            };
+
+            parameters.Add(newParameter);
+            this.ReportParameters = parameters.ToArray();
+
+            return newParameter;
+        }
 
         #endregion
 

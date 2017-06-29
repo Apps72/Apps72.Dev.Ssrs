@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Windows.Controls;
 using Apps72.Dev.Ssrs.ReportViewer.Local;
+using System.Collections.Specialized;
 
 namespace Apps72.Dev.Ssrs.ReportViewer
 {
@@ -68,7 +69,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         /// <param name="password">SQL Server Password to execute SQL Queries</param>
         public ReportControl(string userName, string password)
         {
-            InitializeComponent();            
+            InitializeComponent();
 
             // Default value
             this.UserName = userName;
@@ -201,7 +202,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         protected virtual void InitializeReport(Uri serverUrl, string reportPath, ReportParameter[] parameters)
         {
             // Sets properties
-            this.ReportServerUrl = serverUrl;            
+            this.ReportServerUrl = serverUrl;
             this.ReportFileName = reportPath;
             this.ReportDataSources = null;
             this.ReportParameters = parameters;
@@ -314,7 +315,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
 
             #region REMOTE MODE
 
-            else             
+            else
             {
                 _isReportGenerated = false;
 
@@ -327,9 +328,15 @@ namespace Apps72.Dev.Ssrs.ReportViewer
                 rptViewer.ServerReport.ReportServerUrl = this.ReportServerUrl;
                 rptViewer.ServerReport.ReportPath = this.ReportFileName;
 
+                // Credentials
+                if (!String.IsNullOrEmpty(this.UserName))
+                {
+                    rptViewer.ServerReport.ReportServerCredentials.NetworkCredentials = new System.Net.NetworkCredential(this.UserName, this.Password);
+                }
+
                 // Parameters
                 if (this.ReportParameters != null)
-                {                    
+                {
                     dynamic parameters = this.ReportInstance.NewReportParameterList;
                     foreach (ReportParameter p in this.ReportParameters)
                     {
@@ -344,7 +351,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
             }
 
             #endregion
-        }        
+        }
 
         /// <summary>
         /// Display the Local Report Parameters window to allow the user to fill these parameters
@@ -496,9 +503,6 @@ namespace Apps72.Dev.Ssrs.ReportViewer
             if (rptViewer == null)
                 throw new NullReferenceException("You must override this class and call the method InitializeReport first.");
 
-            if (this.ReportServerUrl != null)
-                throw new NotImplementedException("This method is not yet implemented for remote reports.");
-
             if (!_isReportGenerated)
                 Refresh();
 
@@ -519,7 +523,11 @@ namespace Apps72.Dev.Ssrs.ReportViewer
                     throw new ArgumentException("The format parameter must be specified.");
             }
 
-            byte[] bytes = rptViewer.LocalReport.Render(formatCode);
+            byte[] bytes;
+            if (this.ReportServerUrl != null)
+                bytes = rptViewer.ServerReport.Render(formatCode); 
+            else
+                bytes = rptViewer.LocalReport.Render(formatCode);
 
             FileStream fs = new FileStream(fileName, FileMode.Create);
             fs.Write(bytes, 0, bytes.Length);
@@ -554,14 +562,17 @@ namespace Apps72.Dev.Ssrs.ReportViewer
             if (rptViewer == null)
                 throw new ArgumentException("You must override this class and call the method InitializeReport first.");
 
-            if (this.ReportServerUrl != null)
-                throw new NotImplementedException("This method is not yet implemented for remote reports.");
+            //if (this.ReportServerUrl != null)
+            //    throw new NotImplementedException("This method is not yet implemented for remote reports.");
 
             if (!_isReportGenerated)
                 Refresh();
 
             // Report Generation
-            Export(rptViewer.LocalReport, orientation, ExportFormat.Emf);
+            if (this.ReportServerUrl != null)
+                Export(rptViewer.ServerReport, orientation, ExportFormat.Emf);
+            else
+                Export(rptViewer.LocalReport, orientation, ExportFormat.Emf);
 
             // Printing
             _currentPageIndex = 0;
@@ -594,8 +605,8 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         /// </summary>
         internal void RollbackCulture()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = _currentCulture;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = _currentUICulture;
+            //System.Threading.Thread.CurrentThread.CurrentCulture = _currentCulture;
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = _currentUICulture;
         }
 
         /// <summary>
@@ -659,26 +670,35 @@ namespace Apps72.Dev.Ssrs.ReportViewer
 
             deviceInfo.Append("</DeviceInfo>");
 
+            // Format
+            string formatCode = format == ExportFormat.Pdf ? "PDF" : "Image";
+
             _streams = new List<Stream>();
             _streamsFileName = new List<string>();
 
-            switch (format)
+            // Export a Local Report
+            if (this.ReportServerUrl == null)
             {
-                case ExportFormat.Emf:
-                    this.ReportInstance.InvokeReportRender(report, "Image", deviceInfo.ToString(), "CreateStream");
-                    break;
+                this.ReportInstance.InvokeReportRender(report, formatCode, deviceInfo.ToString(), "CreateStream");
 
-                case ExportFormat.Tiff:
-                    this.ReportInstance.InvokeReportRender(report, "Image", deviceInfo.ToString(), "CreateStream");
-                    break;
-
-                case ExportFormat.Pdf:
-                    this.ReportInstance.InvokeReportRender(report, "PDF", deviceInfo.ToString(), "CreateStream");
-                    break;
+                foreach (Stream stream in _streams)
+                    stream.Position = 0;
             }
 
-            foreach (Stream stream in _streams)
-                stream.Position = 0;
+            // Export a Remote Report
+            // https://github.com/juahidma/petnet-web/blob/master/PETNET/PETNET-INT/Clases/ReportPrintDocument.cs
+            else
+            {
+                Stream pageStream = this.ReportInstance.InvokeReportServerRender(report, formatCode, deviceInfo.ToString(), isFirstPage: true);
+
+                // The server returns an empty stream when moving beyond the last page.
+                while (pageStream.Length > 0)
+                {
+                    _streams.Add(pageStream);
+
+                    pageStream = this.ReportInstance.InvokeReportServerRender(report, formatCode, deviceInfo.ToString(), isFirstPage: false);
+                }
+            }
         }
 
         /// <summary>

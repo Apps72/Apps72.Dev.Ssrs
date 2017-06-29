@@ -2,21 +2,23 @@
 
 ## Introduction
 
-This C# library is a WPF library helping developers to display, save and print, local or remote SQL Server Reports.
+This C# library is a standalone WPF library helping developers to display, save and print, 
+local or remote SQL Server Reports (including Microsoft ReportViewer libraries v12).
 
 ## Samples
 
-### How to display a remote report.
+### How to save and display a remote report.
 
 ```csharp
 ReportWindow report = new ReportWindow(new Uri("http://localhost/ReportServer"), "/MyDocument/MyReport");    
+report.Save("C:\\MyReport.pdf", ReportSaveFormat.Pdf);
 report.ShowDialog();
 ```
 
 ### How to save and display a local Report.
 
 ```csharp
-ReportWindow report = new ReportWindow("C:\\MyReport.pdf", "DataSet1", data);
+ReportWindow report = new ReportWindow("C:\\MyDefinition.rdlc", "DataSet1", data);
 report.Save("C:\\MyReport.pdf", ReportSaveFormat.Pdf);
 report.ShowDialog();
 ```
@@ -34,3 +36,9 @@ report.ReportDataSources[0].Value = data.ToArray();
 
 report.ShowDialog();
 ```
+
+## Change Logs
+
+1.2 - Include **Print** and **Save** command for remote reports.
+
+1.1 - All basic features.

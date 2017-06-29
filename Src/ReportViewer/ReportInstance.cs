@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Collections.Specialized;
 
 namespace Apps72.Dev.Ssrs.ReportViewer
 {
@@ -200,6 +201,55 @@ namespace Apps72.Dev.Ssrs.ReportViewer
             // Executes the LocalReport.Render method
             localReportType.InvokeMember("Render", BindingFlags.InvokeMethod, null, report, args, pmods, null, null);           
                     
+        }
+
+        /// <summary>
+        /// Execute the ServerReport.Render method
+        /// </summary>
+        /// <param name="report"></param>
+        /// <param name="format"></param>
+        /// <param name="deviceInfo"></param>
+        /// <returns></returns>
+        internal Stream InvokeReportServerRender(dynamic report, string format, string deviceInfo, bool isFirstPage)
+        {
+            // Defines arguments to Render method
+            Type serverReportType = report.GetType();
+            string mimeType = String.Empty;
+            string fileExtension = String.Empty;
+
+            // Generating Image renderer pages one at a time can be expensive.  In order
+            // to generate page 2, the server would need to recalculate page 1 and throw it
+            // away.  Using PersistStreams causes the server to generate all the pages in
+            // the background but return as soon as page 1 is complete.
+            var firstPageParameters = new NameValueCollection();
+            firstPageParameters.Add("rs:PersistStreams", "True");
+
+            // GetNextStream returns the next page in the sequence from the background process
+            // started by PersistStreams.
+            var nonFirstPageParameters = new NameValueCollection();
+            nonFirstPageParameters.Add("rs:GetNextStream", "True");
+
+            // Arguments
+            object[] args = new object[] { format, deviceInfo, isFirstPage ? firstPageParameters : nonFirstPageParameters, mimeType, fileExtension};
+
+            // Out parameters
+            ParameterModifier pm = new ParameterModifier(5);
+            pm[0] = false;      // format
+            pm[1] = false;      // devinceInfo
+            pm[2] = false;      // firstPageParameters / nonFirstPageParameters
+            pm[3] = true;       // mimeType
+            pm[4] = true;       // fileExtension
+            ParameterModifier[] pmods = { pm };
+
+            // Executes the ServerReport.Render method
+            try
+            {
+                return serverReportType.InvokeMember("Render", BindingFlags.InvokeMethod, null, report, args, pmods, null, null);
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                return null;
+            }            
         }
     }
 }

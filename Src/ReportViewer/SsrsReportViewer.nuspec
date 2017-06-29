@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Apps72.Dev.Ssrs.ReportViewer</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>SSRS ReportViewer</title>
     <authors>Denis Voituron</authors>
     <owners>Denis Voituron</owners>
     <projectUrl>https://github.com/Apps72/Apps72.Dev.Ssrs</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/Apps72/Dev.Data/master/Logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This SSRS ReportViewer library is a WPF library helping developers to display, save and print, local or remote SQL Server Reports.</description>
-    <summary>This SSRS ReportViewer library is a WPF library helping developers to display, save and print, local or remote SQL Server Reports.</summary>
+    <description>This SSRS ReportViewer library is a standalone WPF library helping developers to display, save and print, local or remote SQL Server Reports.</description>
+    <summary>This SSRS ReportViewer library is a standalone WPF library helping developers to display, save and print, local or remote SQL Server Reports.</summary>
     <copyright>Copyright 2016 Denis Voituron</copyright>
     <language />
     <tags>SSRS Report Reporting SQLServer WPF</tags>
