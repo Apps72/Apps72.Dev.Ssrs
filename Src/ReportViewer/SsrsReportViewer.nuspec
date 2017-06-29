@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Apps72.Dev.Ssrs.ReportViewer</id>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
     <title>SSRS ReportViewer</title>
     <authors>Denis Voituron</authors>
     <owners>Denis Voituron</owners>

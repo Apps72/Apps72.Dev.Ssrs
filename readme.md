@@ -39,6 +39,8 @@ report.ShowDialog();
 
 ## Change Logs
 
+1.3 - Add **Duplex** and **IsColored** argument to print Recto/Verso and in color.
+
 1.2 - Include **Print** and **Save** command for remote reports.
 
 1.1 - All basic features.

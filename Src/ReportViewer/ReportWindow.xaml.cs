@@ -268,6 +268,18 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         }
 
         /// <summary>
+        /// Print the current report to the specified printer
+        /// </summary>
+        /// <param name="printerName">Printer name (existing in Windows)</param>
+        /// <param name="orientation">Type of paper orientation: landscape or portrait</param>
+        /// <param name="duplex">Recto / Verso mode</param>
+        /// <param name="isColored">True to print in color, False to print in gray</param>
+        public virtual void Print(string printerName, ReportOrientation orientation, Duplex duplex, bool isColored)
+        {
+            reportControl.Print(printerName, orientation, duplex, isColored);
+        }
+
+        /// <summary>
         /// Add a parameter value to this report.
         /// </summary>
         /// <param name="report"></param>

@@ -560,6 +560,18 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         /// <param name="orientation">Type of paper orientation: landscape or portrait</param>
         public virtual void Print(string printerName, ReportOrientation orientation)
         {
+            Print(printerName, orientation, Duplex.Default, true);
+        }
+
+        /// <summary>
+        /// Print the current report to the specified printer
+        /// </summary>
+        /// <param name="printerName">Printer name (existing in Windows)</param>
+        /// <param name="orientation">Type of paper orientation: landscape or portrait</param>
+        /// <param name="duplex">Recto / Verso mode</param>
+        /// <param name="isColored">True to print in color, False to print in gray</param>
+        public virtual void Print(string printerName, ReportOrientation orientation, Duplex duplex, bool isColored)
+        {
             if (rptViewer == null)
                 throw new ArgumentException("You must override this class and call the method InitializeReport first.");
 
@@ -577,7 +589,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
 
             // Printing
             _currentPageIndex = 0;
-            PrintAllPages(printerName, orientation);
+            PrintAllPages(printerName, orientation, duplex, isColored);
 
             // Stream closing
             if (_streams != null)
@@ -732,7 +744,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         /// </summary>
         /// <param name="printerName">Printer name as know in Windows</param>    
         /// <param name="orientation">Type of orientation: landscape or portrait</param>
-        private void PrintAllPages(string printerName, ReportOrientation orientation)
+        private void PrintAllPages(string printerName, ReportOrientation orientation, Duplex duplex, bool isColored)
         {
             if (_streams == null || _streams.Count == 0)
                 return;
@@ -740,6 +752,15 @@ namespace Apps72.Dev.Ssrs.ReportViewer
             PrintDocument printDoc = new PrintDocument();
             printDoc.DefaultPageSettings.Landscape = (orientation == ReportOrientation.Landscape);
             printDoc.PrinterSettings.PrinterName = printerName;
+            if (printDoc.PrinterSettings.SupportsColor)
+            {
+                printDoc.DefaultPageSettings.Color = isColored;
+                printDoc.PrinterSettings.DefaultPageSettings.Color = isColored;
+            }
+            if (printDoc.PrinterSettings.CanDuplex)
+            {
+                printDoc.PrinterSettings.Duplex = duplex;
+            }
 
             if (!printDoc.PrinterSettings.IsValid)
             {
