@@ -11,6 +11,7 @@ using System.Drawing.Printing;
 using System.Windows.Controls;
 using Apps72.Dev.Ssrs.ReportViewer.Local;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace Apps72.Dev.Ssrs.ReportViewer
 {
@@ -320,9 +321,9 @@ namespace Apps72.Dev.Ssrs.ReportViewer
                 _isReportGenerated = false;
 
                 // Report configuration for remote mode
-                rptViewer.ProcessingMode = this.ReportInstance.GetProcessingMode("Remote");      // Microsoft.Reporting.WinForms.ProcessingMode.Remote;
-                rptViewer.SetDisplayMode(this.ReportInstance.GetDisplayMode("PrintLayout"));     // Microsoft.Reporting.WinForms.DisplayMode.PrintLayout
-                rptViewer.ZoomMode = this.ReportInstance.GetZoomMode("PageWidth");               // Microsoft.Reporting.WinForms.ZoomMode.PageWidth            
+                //rptViewer.ProcessingMode = this.ReportInstance.GetProcessingMode("Remote");      // Microsoft.Reporting.WinForms.ProcessingMode.Remote;
+                //rptViewer.SetDisplayMode(this.ReportInstance.GetDisplayMode("PrintLayout"));     // Microsoft.Reporting.WinForms.DisplayMode.PrintLayout
+                //rptViewer.ZoomMode = this.ReportInstance.GetZoomMode("PageWidth");               // Microsoft.Reporting.WinForms.ZoomMode.PageWidth            
 
                 // Report Source
                 rptViewer.ServerReport.ReportServerUrl = this.ReportServerUrl;
@@ -657,15 +658,27 @@ namespace Apps72.Dev.Ssrs.ReportViewer
 
             }
 
+            // Paper Size
+            dynamic rpt = report;
+            dynamic paperSize = rpt.GetDefaultPageSettings().PaperSize;
+            dynamic margins = rpt.GetDefaultPageSettings().Margins;
+
+            deviceInfo.Append($" <StartPage>0</StartPage>");
+            deviceInfo.Append($" <EndPage>0</EndPage>");
+            deviceInfo.Append($" <MarginTop>{ToInches(margins.Top)}</MarginTop>");
+            deviceInfo.Append($" <MarginLeft>{ToInches(margins.Left)}</MarginLeft>");
+            deviceInfo.Append($" <MarginRight>{ToInches(margins.Right)}</MarginRight>");
+            deviceInfo.Append($" <MarginBottom>{ToInches(margins.Bottom)}</MarginBottom>");
+
             if (orientation == ReportOrientation.Landscape)
             {
-                deviceInfo.Append("  <PageWidth>29.7cm</PageWidth>");
-                deviceInfo.Append("  <PageHeight>21cm</PageHeight>");
+                deviceInfo.Append($" <PageHeight>{ToInches(paperSize.Width)}</PageHeight>");
+                deviceInfo.Append($" <PageWidth>{ToInches(paperSize.Height)}</PageWidth> ");
             }
             else
             {
-                deviceInfo.Append("  <PageWidth>21cm</PageWidth>");
-                deviceInfo.Append("  <PageHeight>29.7cm</PageHeight>");
+                deviceInfo.Append($" <PageHeight>{ToInches(paperSize.Height)}</PageHeight>");
+                deviceInfo.Append($" <PageWidth>{ToInches(paperSize.Width)}</PageWidth> ");
             }
 
             deviceInfo.Append("</DeviceInfo>");
@@ -735,6 +748,12 @@ namespace Apps72.Dev.Ssrs.ReportViewer
 
             printDoc.PrintPage += new PrintPageEventHandler(PrintPage);
             printDoc.Print();
+        }
+
+        private static string ToInches(int hundrethsOfInch)
+        {
+            double inches = hundrethsOfInch / 100.0;
+            return inches.ToString(CultureInfo.InvariantCulture) + "in";
         }
 
         #endregion
