@@ -24,7 +24,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
 
             FileInfo currentFileName = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Microsoft.ReportViewer.WinForms.dll"));
             FileInfo binFileName = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin\\Microsoft.ReportViewer.WinForms.dll"));
-            string gacAssemblyName = "Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91";
+            string gacAssemblyName = _owner.ReportViewerWinFormsAssemblyName;
 
             // Load the ReportViewer Assembly from the current folder
             if (currentFileName.Exists)

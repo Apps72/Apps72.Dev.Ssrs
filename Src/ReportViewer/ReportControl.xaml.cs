@@ -73,6 +73,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
             InitializeComponent();
 
             // Default value
+            this.ReportViewerWinFormsAssemblyName = "Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91";
             this.UserName = userName;
             this.Password = password;
             this.LocalParametersSource = ReportLocalParameterSource.None;
@@ -109,6 +110,12 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         /// In other case, this property will be ignored.
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Identifier if Microsoft.ReportViewer.WinForms assembly.
+        /// Exammple: "Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+        /// </summary>
+        public string ReportViewerWinFormsAssemblyName { get; set; }
 
         /// <summary>
         /// Gets or sets the Report filename. 
@@ -322,8 +329,8 @@ namespace Apps72.Dev.Ssrs.ReportViewer
 
                 // Report configuration for remote mode
                 rptViewer.ProcessingMode = this.ReportInstance.GetProcessingMode("Remote");      // Microsoft.Reporting.WinForms.ProcessingMode.Remote;
-                //rptViewer.SetDisplayMode(this.ReportInstance.GetDisplayMode("PrintLayout"));     // Microsoft.Reporting.WinForms.DisplayMode.PrintLayout
-                //rptViewer.ZoomMode = this.ReportInstance.GetZoomMode("PageWidth");               // Microsoft.Reporting.WinForms.ZoomMode.PageWidth            
+                rptViewer.SetDisplayMode(this.ReportInstance.GetDisplayMode("PrintLayout"));     // Microsoft.Reporting.WinForms.DisplayMode.PrintLayout
+                rptViewer.ZoomMode = this.ReportInstance.GetZoomMode("PageWidth");               // Microsoft.Reporting.WinForms.ZoomMode.PageWidth            
 
                 // Report Source
                 rptViewer.ServerReport.ReportServerUrl = this.ReportServerUrl;

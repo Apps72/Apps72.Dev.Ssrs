@@ -154,6 +154,22 @@ namespace Apps72.Dev.Ssrs.ReportViewer
         }
 
         /// <summary>
+        /// Gets or sets the Identifier if Microsoft.ReportViewer.WinForms assembly.
+        /// Exammple: "Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+        /// </summary>
+        public string ReportViewerWinFormsAssemblyName
+        {
+            get
+            {
+                return reportControl.ReportViewerWinFormsAssemblyName;
+            }
+            set
+            {
+                reportControl.ReportViewerWinFormsAssemblyName = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the default password used in the ConnectionString
         /// If this property is set (not Empty) and if the ConnectionString is in Integrated Security (Trusted Mode), 
         /// then the ConnectionString will constain "User ID=[UserName];Password=[Password]".
