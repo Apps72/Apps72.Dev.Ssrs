@@ -321,7 +321,7 @@ namespace Apps72.Dev.Ssrs.ReportViewer
                 _isReportGenerated = false;
 
                 // Report configuration for remote mode
-                //rptViewer.ProcessingMode = this.ReportInstance.GetProcessingMode("Remote");      // Microsoft.Reporting.WinForms.ProcessingMode.Remote;
+                rptViewer.ProcessingMode = this.ReportInstance.GetProcessingMode("Remote");      // Microsoft.Reporting.WinForms.ProcessingMode.Remote;
                 //rptViewer.SetDisplayMode(this.ReportInstance.GetDisplayMode("PrintLayout"));     // Microsoft.Reporting.WinForms.DisplayMode.PrintLayout
                 //rptViewer.ZoomMode = this.ReportInstance.GetZoomMode("PageWidth");               // Microsoft.Reporting.WinForms.ZoomMode.PageWidth            
 

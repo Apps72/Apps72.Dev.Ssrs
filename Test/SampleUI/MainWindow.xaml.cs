@@ -35,7 +35,9 @@ namespace Apps72.Dev.Ssrs.ReportViewer.SampleUI
         /// <param name="e"></param>
         private void btnDisplay_Click(object sender, RoutedEventArgs e)
         {
-            ReportWindow report = new ReportWindow(new Uri(txtUrl.Text), txtPath.Text);            
+            ReportWindow report = new ReportWindow(new Uri(txtUrl.Text), txtPath.Text);
+            report.ReportServerUrl = new Uri(txtUrl.Text);
+            report.ReportFileName = txtPath.Text;
             report.ShowDialog();
         }
 

@@ -12,13 +12,12 @@ namespace Apps72.Dev.Ssrs.ReportViewer.Tests
         {
             var report = new ReportWindow();
             report.ReportServerUrl = new Uri("http://hiper.trasys.be/ReportServer");
-            report.UserName = "ReportUser";
-            report.Password = "trasys@123";
             report.ReportFileName = "/MecarFtd/FiringRequest_EN";
             report.AddParameter("RequestId", "1", isVisible: false);
 
             report.Save("C:\\_Temp\\Test.pdf", ReportSaveFormat.Pdf);
             report.Print("Send To OneNote 2016", ReportOrientation.Landscape, Duplex.Default, false);
+            report.ShowDialog();
         }
     }
 }
